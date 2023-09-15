@@ -3,7 +3,27 @@
 <h2>Edit Person</h2>
 
 <form asp-action="EditPerson" asp-route-id="@Model.Id" id="editPersonForm">
-    <!-- ... Existing form fields (First Name, Last Name, Gender) ... -->
+
+    <div class="form-group">
+        <label asp-for="FirstName">First Name</label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LastName">Last Name</label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Gender">Gender</label>
+        <select asp-for="Gender" asp-items="Html.GetEnumSelectList<FormInterviewProject.Models.Gender>()" class="form-control">
+            <option value="">Select gender</option>
+        </select>
+        <span asp-validation-for="Gender" class="text-danger"></span>
+    </div>
+
 
     <div class="form-group">
         <label asp-for="Country.CountryId">Country</label>
@@ -32,7 +52,6 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            // Load states for the selected country on page load (for editing)
             loadStates();
 
             $('#countryDropdown').change(function () {
@@ -56,7 +75,6 @@
                     });
                 }
 
-                // Load cities for the selected state on page load (for editing)
                 loadCities();
             }
 

@@ -3,32 +3,51 @@
 
 <h2>Create Person</h2>
 
-<form asp-action="CreatePerson" id="createPersonForm">
-    <!-- ... Existing form fields (First Name, Last Name, Gender) ... -->
 
-    <div class="form-group">
-        <label asp-for="Country.CountryId">Country</label>
-        <select asp-for="Country.CountryId" asp-items="ViewBag.Countries" class="form-control" id="countryDropdown">
-            <option value="">Select a country</option>
-        </select>
-        <span asp-validation-for="Country.CountryId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="State.StateId">State</label>
-        <select asp-for="State.StateId" class="form-control" id="stateDropdown" disabled>
-            <option value="">Select a state</option>
-        </select>
-        <span asp-validation-for="State.StateId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="City.CityId">City</label>
-        <select asp-for="City.CityId" class="form-control" id="cityDropdown" disabled>
-            <option value="">Select a city</option>
-        </select>
-        <span asp-validation-for="City.CityId" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-</form>
+    <form asp-action="CreatePerson" id="createPersonForm">
+        <div class="form-group">
+            <label asp-for="FirstName">First Name</label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="LastName">Last Name</label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Gender">Gender</label>
+            <select asp-for="Gender" asp-items="Html.GetEnumSelectList<FormInterviewProject.Models.Gender>()" class="form-control">
+                <option value="">Select gender</option>
+            </select>
+            <span asp-validation-for="Gender" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Country.CountryId">Country</label>
+            <select asp-for="Country.CountryId" asp-items="ViewBag.Countries" class="form-control" id="countryDropdown">
+                <option value="">Select a country</option>
+            </select>
+            <span asp-validation-for="Country.CountryId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="State.StateId">State</label>
+            <select asp-for="State.StateId" class="form-control" id="stateDropdown" disabled>
+                <option value="">Select a state</option>
+            </select>
+            <span asp-validation-for="State.StateId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="City.CityId">City</label>
+            <select asp-for="City.CityId" class="form-control" id="cityDropdown" disabled>
+                <option value="">Select a city</option>
+            </select>
+            <span asp-validation-for="City.CityId" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+
+    </form>
 
 @section Scripts {
     <script>
@@ -36,18 +55,15 @@
             $('#countryDropdown').change(function () {
                 var selectedCountryId = $(this).val();
                 if (selectedCountryId) {
-                    // Enable the State dropdown and clear its options
                     $('#stateDropdown').prop('disabled', false).empty();
                     $('#cityDropdown').prop('disabled', true).empty();
 
-                    // Load States for the selected Country using AJAX
                     $.getJSON('/Person/GetStates', { countryId: selectedCountryId }, function (data) {
                         $.each(data, function (i, state) {
                             $('#stateDropdown').append($('<option>').text(state.name).attr('value', state.id));
                         });
                     });
                 } else {
-                    // If no Country is selected, disable and clear the State and City dropdowns
                     $('#stateDropdown').prop('disabled', true).empty();
                     $('#cityDropdown').prop('disabled', true).empty();
                 }
@@ -56,17 +72,14 @@
             $('#stateDropdown').change(function () {
                 var selectedStateId = $(this).val();
                 if (selectedStateId) {
-                    // Enable the City dropdown and clear its options
                     $('#cityDropdown').prop('disabled', false).empty();
 
-                    // Load Cities for the selected State using AJAX
                     $.getJSON('/Person/GetCities', { stateId: selectedStateId }, function (data) {
                         $.each(data, function (i, city) {
                             $('#cityDropdown').append($('<option>').text(city.name).attr('value', city.id));
                         });
                     });
                 } else {
-                    // If no State is selected, disable and clear the City dropdown
                     $('#cityDropdown').prop('disabled', true).empty();
                 }
             });
