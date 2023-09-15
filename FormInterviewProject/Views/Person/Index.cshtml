@@ -1,0 +1,38 @@
+﻿@model IEnumerable<FormInterviewProject.Models.Person>
+
+<h2>Persons</h2>
+
+<p>
+    <a asp-action="CreatePerson" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>Country</th>
+            <th>State</th>
+            <th>City</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var person in Model)
+        {
+            <tr>
+                <td>@person.FirstName</td>
+                <td>@person.LastName</td>
+                <td>@person.Gender</td>
+                <td>@person.Country.Name</td>
+                <td>@person.State.Name</td>
+                <td>@person.City.Name</td>
+                <td>
+                    <a asp-action="EditPerson" asp-route-id="@person.Id">Edit</a> |
+                    <a asp-action="DeletePerson" asp-route-id="@person.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

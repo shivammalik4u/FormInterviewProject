@@ -1,0 +1,77 @@
+﻿@model FormInterviewProject.Models.Person
+
+<h2>Edit Person</h2>
+
+<form asp-action="EditPerson" asp-route-id="@Model.Id" id="editPersonForm">
+    <!-- ... Existing form fields (First Name, Last Name, Gender) ... -->
+
+    <div class="form-group">
+        <label asp-for="Country.CountryId">Country</label>
+        <select asp-for="Country.CountryId" asp-items="ViewBag.Countries" class="form-control" id="countryDropdown">
+            <option value="">Select a country</option>
+        </select>
+        <span asp-validation-for="Country.CountryId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="State.StateId">State</label>
+        <select asp-for="State.StateId" asp-items="ViewBag.States" class="form-control" id="stateDropdown">
+            <option value="">Select a state</option>
+        </select>
+        <span asp-validation-for="State.StateId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="City.CityId">City</label>
+        <select asp-for="City.CityId" asp-items="ViewBag.Cities" class="form-control" id="cityDropdown">
+            <option value="">Select a city</option>
+        </select>
+        <span asp-validation-for="City.CityId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Load states for the selected country on page load (for editing)
+            loadStates();
+
+            $('#countryDropdown').change(function () {
+                loadStates();
+            });
+
+            $('#stateDropdown').change(function () {
+                loadCities();
+            });
+
+            function loadStates() {
+                var selectedCountryId = $('#countryDropdown').val();
+                $('#stateDropdown').empty();
+                $('#cityDropdown').empty();
+
+                if (selectedCountryId) {
+                    $.getJSON('/Person/GetStates', { countryId: selectedCountryId }, function (data) {
+                        $.each(data, function (i, state) {
+                            $('#stateDropdown').append($('<option>').text(state.name).attr('value', state.id));
+                        });
+                    });
+                }
+
+                // Load cities for the selected state on page load (for editing)
+                loadCities();
+            }
+
+            function loadCities() {
+                var selectedStateId = $('#stateDropdown').val();
+                $('#cityDropdown').empty();
+
+                if (selectedStateId) {
+                    $.getJSON('/Person/GetCities', { stateId: selectedStateId }, function (data) {
+                        $.each(data, function (i, city) {
+                            $('#cityDropdown').append($('<option>').text(city.name).attr('value', city.id));
+                        });
+                    });
+                }
+            }
+        });
+    </script>
+}
