@@ -40,24 +40,6 @@ namespace FormInterviewProject.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> CreatePerson(Person person)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(person);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-
-        //    ViewBag.Countries = new SelectList(_context.Countries, "CountryId", "Name", person.Country.CountryId);
-        //    ViewBag.States = new SelectList(_context.States, "StateId", "Name", person.State.StateId);
-        //    ViewBag.Cities = new SelectList(_context.Cities, "CityId", "Name", person.City.CityId);
-
-        //    return View(person);
-        //}
-
 
 
         [HttpPost]
