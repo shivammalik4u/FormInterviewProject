@@ -30,7 +30,6 @@ namespace FormInterviewProject.Controllers
             return View(people);
         }
 
-        // GET: CreatePerson
         public IActionResult CreatePerson()
         {
             ViewBag.Countries = new SelectList(_context.Countries, "CountryId", "Name");
@@ -40,6 +39,10 @@ namespace FormInterviewProject.Controllers
             return View();
         }
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 2cb3d58b5d25c7cfb09f1640dc3457860ecd17dc
 
 
         [HttpPost]
@@ -48,12 +51,10 @@ namespace FormInterviewProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Bind the selected Country, State, and City IDs
                 var selectedCountry = await _context.Countries.FindAsync(person.Country.CountryId);
                 var selectedState = await _context.States.FindAsync(person.State.StateId);
                 var selectedCity = await _context.Cities.FindAsync(person.City.CityId);
 
-                // Make sure to set the Country, State, and City properties of the Person
                 person.Country = selectedCountry;
                 person.State = selectedState;
                 person.City = selectedCity;
@@ -67,10 +68,14 @@ namespace FormInterviewProject.Controllers
             ViewBag.States = new SelectList(_context.States, "StateId", "Name", person.State.StateId);
             ViewBag.Cities = new SelectList(_context.Cities, "CityId", "Name", person.City.CityId);
 
+
+            ViewBag.FirstName = person.FirstName;
+            ViewBag.LastName = person.LastName;
+            ViewBag.Gender = person.Gender;
+
             return View(person);
         }
 
-        // GET: EditPerson/5
         public async Task<IActionResult> EditPerson(int? id)
         {
             if (id == null)
@@ -89,13 +94,10 @@ namespace FormInterviewProject.Controllers
                 return NotFound();
             }
 
-            // Load the available countries for the dropdown
             ViewBag.Countries = new SelectList(_context.Countries, "CountryId", "Name");
 
-            // Load the states for the selected country (pre-selected based on person.CountryId)
             ViewBag.States = new SelectList(_context.States.Where(s => s.CountryId == person.Country.CountryId), "StateId", "Name");
 
-            // Load the cities for the selected state (pre-selected based on person.StateId)
             ViewBag.Cities = new SelectList(_context.Cities.Where(c => c.StateId == person.State.StateId), "CityId", "Name");
 
             return View(person);
@@ -114,12 +116,10 @@ namespace FormInterviewProject.Controllers
             {
                 try
                 {
-                    // Bind the selected Country, State, and City IDs
                     var selectedCountry = await _context.Countries.FindAsync(person.Country.CountryId);
                     var selectedState = await _context.States.FindAsync(person.State.StateId);
                     var selectedCity = await _context.Cities.FindAsync(person.City.CityId);
 
-                    // Update the Country, State, and City properties of the Person
                     person.Country = selectedCountry;
                     person.State = selectedState;
                     person.City = selectedCity;
@@ -141,20 +141,21 @@ namespace FormInterviewProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Load the available countries for the dropdown
             ViewBag.Countries = new SelectList(_context.Countries, "CountryId", "Name");
 
-            // Load the states for the selected country (pre-selected based on person.CountryId)
             ViewBag.States = new SelectList(_context.States.Where(s => s.CountryId == person.Country.CountryId), "StateId", "Name");
 
-            // Load the cities for the selected state (pre-selected based on person.StateId)
             ViewBag.Cities = new SelectList(_context.Cities.Where(c => c.StateId == person.State.StateId), "CityId", "Name");
+
+            ViewBag.FirstName = person.FirstName;
+            ViewBag.LastName = person.LastName;
+            ViewBag.Gender = person.Gender;
 
             return View(person);
         }
 
 
-        // GET: DeletePerson/5
+
         public async Task<IActionResult> DeletePerson(int? id)
         {
             if (id == null)
